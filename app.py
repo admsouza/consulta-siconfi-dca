@@ -3,17 +3,14 @@ import pandas as pd
 
 
 # URL da API
-# API_URL = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_patrimonial"
-API_URL = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria"
+API_URL = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca"
+# API_URL = "https://apidatalake.tesouro.gov.br/ords/siconfi/tt/msc_orcamentaria"
 
 
 params = {
+    "an_exercicio": "2023",
+    "no_anexo": "DCA-Anexo I-HI",
     "id_ente": "2509909",
-    "an_referencia": "2023",
-    "me_referencia": "1",
-    "co_tipo_matriz": "MSCC",
-    "classe_conta": "6",
-    "id_tv": "period_change"
 }
 
 
@@ -43,31 +40,25 @@ if response.status_code == 200:
             if isinstance(item, dict):
                 # conta_contabil = item.get("conta_contabil")
                 # fonte_recursos = item.get("fonte_recursos")
-                  poder_orgao = item.get("poder_orgao")
+                #   poder_orgao = item.get("poder_orgao")
 
-                # Filtrar dadoss
-            if (poder_orgao == "20231"):
+            #     Filtrar dadoss
+            # if (poder_orgao == "20231"):
 
-                    apitce = {
-                    "tipo_matriz": item.get("tipo_matriz"),
+                    apisiconfi = {
+                    "exercicio": item.get("exercicio"),
+                    "instituicao": item.get("instituicao"),
                     "cod_ibge": item.get("cod_ibge"),
-                    # "classe_conta": item.get("classe_conta"),
-                    "conta_contabil": item.get("conta_contabil"),
-                    "poder_orgao": item.get("poder_orgao"),
-                    # "financeiro_permanente": item.get("financeiro_permanente"),
-                    # "ano_fonte_recursos": item.get("ano_fonte_recursos"),
-                    "fonte_recursos": item.get("fonte_recursos"),
-                    # "exercicio": item.get("exercicio"),
-                    # "mes_referencia": item.get("mes_referencia"),
-                    # "divida_consolidada": item.get("divida_consolidada"),
-                    # "data_referencia": item.get("data_referencia"),
-                    # "entrada_msc": item.get("entrada_msc"),
-                    # "valor": item.get("valor"),
-                    # "natureza_conta": item.get("natureza_conta"),
-                    # "tipo_valor": item.get("tipo_valor"),
-                    # "complemento_fonte": item.get("complemento_fonte"),
-                }
-                    datasiconfi.append(apitce)
+                    "uf": item.get("uf"),
+                    "anexo": item.get("anexo"),
+                    "rotulo": item.get("rotulo"),
+                    "coluna": item.get("coluna"),
+                    "cod_conta": item.get("cod_conta"),
+                    "conta": item.get("conta"),
+                    "valor": item.get("valor"),
+                    # "populacao": item.get("populacao"),
+                   }
+                    datasiconfi.append(apisiconfi)
 
         # Convertendo os dados para um DataFrame do Pandas
         if datasiconfi:
